@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+node_modules/
+client/node_modules/
+server/node_modules/
+ai-service/venv/
+.env
+*.pyc
+__pycache__/
+client/build/
+.DS_Store
+
+# Python
+ai-service/venv/
+ai-service/__pycache__/
+*.pyc
+*.h5
+
+# Environment
+.env
+.env.local
+
+# Build
+client/build/
+
+# OS files
+.DS_Store
+Thumbs.db
