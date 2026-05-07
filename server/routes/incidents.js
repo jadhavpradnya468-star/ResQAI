@@ -22,5 +22,30 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch' });
   }
 });
-
+// Send to doctor
+router.post('/send-to-doctor', async (req, res) => {
+  try {
+    const { animalType, severity, location } = req.body;
+    
+    const incident = new Incident({
+      animalType,
+      severity,
+      location,
+      status: 'Sent to Doctor',
+      createdAt: new Date()
+    });
+    
+    await incident.save();
+    
+    res.json({
+      success: true,
+      message: 'Report sent successfully!',
+      reportId: incident._id,
+      timestamp: incident.createdAt,
+    });
+    
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to send report' });
+  }
+});
 module.exports = router;
