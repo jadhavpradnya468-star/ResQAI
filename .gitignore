@@ -29,3 +29,14 @@ client/build/
 # OS files
 .DS_Store
 Thumbs.db
+
+node_modules/
+frontend/node_modules/
+server/node_modules/
+client/node_modules/
+ai-service/venv/
+.env
+__pycache__/
+*.pyc
+build/
+.DS_Store
