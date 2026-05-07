@@ -1,42 +1,41 @@
-# Dependencies
+# =========================
+# Node.js Dependencies
+# =========================
 node_modules/
 client/node_modules/
 server/node_modules/
+frontend/node_modules/
 
-node_modules/
-client/node_modules/
-server/node_modules/
+# =========================
+# Python Virtual Environment
+# =========================
 ai-service/venv/
-.env
-*.pyc
+
+# =========================
+# Python Cache Files
+# =========================
 __pycache__/
-client/build/
-.DS_Store
-
-# Python
-ai-service/venv/
-ai-service/__pycache__/
 *.pyc
-*.h5
 
-# Environment
+# =========================
+# Environment Files
+# =========================
 .env
 .env.local
 
-# Build
+# =========================
+# Build Folders
+# =========================
+build/
 client/build/
 
-# OS files
+# =========================
+# AI / Model Files
+# =========================
+*.h5
+
+# =========================
+# OS Generated Files
+# =========================
 .DS_Store
 Thumbs.db
-
-node_modules/
-frontend/node_modules/
-server/node_modules/
-client/node_modules/
-ai-service/venv/
-.env
-__pycache__/
-*.pyc
-build/
-.DS_Store
