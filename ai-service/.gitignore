@@ -1,0 +1,6 @@
+# AI Models
+*.pt
+*.h5
+*.pkl
+*.pth
+*.onnx
