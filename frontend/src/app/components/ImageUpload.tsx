@@ -43,7 +43,7 @@ const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
       await analyzeImage(file);
     }
   };
-
+  
   const analyzeImage = async (file: File) => {
     setAnalyzing(true);
     setResult(null);
@@ -52,43 +52,91 @@ const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
       const formData = new FormData();
       formData.append('image', file);
 
-      const response = await fetch('/api/analyze', {
+      const response = await fetch('http://localhost:5000/api/analyze', {
         method: 'POST',
         body: formData
       });
 
       const data = await response.json();
+      console.log("AI Response:", data);
+
+      // Handle unknown or failed detection
+      if (!data.success || !data.animal || data.animal === "unknown") {
+        setResult({
+          animal: "Not Detected",
+          severity: "mild",
+          description: "⚠️ Animal not detected clearly! Please retake photo with good lighting, animal fully visible and close up.",
+          icon: "📸",
+        });
+        setAnalyzing(false);
+        return;
+      }
+
+      // Fix severity mapping
+      const severityRaw = data.severity?.toLowerCase() || "moderate";
+      const severityMap: { [key: string]: "severe" | "moderate" | "mild" } = {
+        "severe":   "severe",
+        "moderate": "moderate",
+        "mild":     "mild"
+      };
+
+      const severity = severityMap[severityRaw] || "moderate";
+      const animal = data.animal?.toLowerCase() || "unknown";
+
+      // First aid messages per animal
+      const firstAidMap: { [key: string]: string } = {
+        dog:      "Keep the dog calm and still. Apply gentle pressure on wounds. Rush to vet immediately.",
+        cat:      "Handle gently, minimize movement. Cover with soft cloth. Visit vet immediately.",
+        cow:      "Keep calm, do not excite. Call government vet helpline 1962 immediately.",
+        bird:     "Keep warm, minimal handling. Place in dark quiet box. Call wildlife rescue.",
+        horse:    "Keep calm and still. Do not move if leg injured. Call vet immediately.",
+        sheep:    "Keep calm, separate from herd. Apply pressure on wounds. Call vet.",
+        elephant: "Do not approach alone. Call wildlife authorities immediately.",
+        bear:     "Keep distance! Call wildlife rescue immediately. Do not approach.",
+        zebra:    "Do not approach. Call wildlife authorities immediately.",
+        giraffe:  "Do not approach. Call wildlife authorities immediately.",
+      };
+
+      const firstAid = firstAidMap[animal] || 
+        "Keep animal calm. Contact nearest vet immediately!";
 
       setResult({
-        animal: data.animal || "Unknown",
-        severity: (data.severity?.toLowerCase() || "moderate") as "severe" | "moderate" | "mild",
-        description: `${data.animal} detected with ${data.severity} condition. Please follow first aid steps and contact vet immediately.`,
-        icon: getAnimalIcon(data.animal),
+        animal: animal.charAt(0).toUpperCase() + animal.slice(1),
+        severity: severity,
+        description: firstAid,
+        icon: getAnimalIcon(animal),
       });
 
     } catch (error) {
+      console.log("Error:", error);
       setResult({
-        animal: "Unknown",
+        animal: "Error",
         severity: "moderate",
-        description: "Could not analyze image. Please try again.",
-        icon: "🐾",
+        description: "Could not connect to server. Make sure backend is running on port 5000.",
+        icon: "⚠️",
       });
     } finally {
       setAnalyzing(false);
     }
   };
+      
 
   const getAnimalIcon = (animal: string) => {
     const icons: { [key: string]: string } = {
-      dog: "🐕",
-      cat: "🐈",
-      cow: "🐄",
-      bird: "🦜",
-      horse: "🐎",
+      dog:      "🐕",
+      cat:      "🐈",
+      cow:      "🐄",
+      bird:     "🦜",
+      horse:    "🐎",
+      sheep:    "🐑",
+      elephant: "🐘",
+      bear:     "🐻",
+      zebra:    "🦓",
+      giraffe:  "🦒",
+      unknown:  "🐾",
     };
     return icons[animal?.toLowerCase()] || "🐾";
   };
-
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case "severe":
