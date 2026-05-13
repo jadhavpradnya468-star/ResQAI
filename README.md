@@ -133,18 +133,6 @@ Track all rescue incidents in real time.
 
 ---
 
-# 📱 Progressive Web App (PWA)
-
-ResQAI works like a native mobile application.
-
-✅ Install on mobile  
-✅ Fast loading  
-✅ Responsive UI  
-✅ Cross-platform support  
-✅ No Play Store required  
-
----
-
 # 🛠️ Tech Stack
 
 | Category | Technology |
